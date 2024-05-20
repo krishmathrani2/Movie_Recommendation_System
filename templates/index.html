@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="text-center">Movie Recommendation System</h1>
+                <form method="post" action="/recommend">
+                    <div class="form-group">
+                        <label for="user_id">User ID</label>
+                        <input type="number" class="form-control" id="user_id" name="user_id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        <select class="form-control" id="genre" name="genre" required>
+                            {% for genre in genres %}
+                                <option value="{{ genre }}">{{ genre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_year">Start Year</label>
+                        <input type="number" class="form-control" id="start_year" name="start_year" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_year">End Year</label>
+                        <input type="number" class="form-control" id="end_year" name="end_year" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="num_recommendations">Number of Recommendations</label>
+                        <input type="number" class="form-control" id="num_recommendations" name="num_recommendations" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Get Recommendations</button>
+                </form>
+                {% if no_recommendations %}
+                    <h2 class="text-center">No movies found for the specified criteria.</h2>
+                {% elif recommendations %}
+                    <h2 class="text-center">Recommended Movies for User ID {{ user_id }}</h2>
+                    <ul class="list-group">
+                        {% for movie in recommendations %}
+                            <li class="list-group-item">{{ movie }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
